@@ -1,5 +1,5 @@
 FROM alpine:latest
-LABEL maintainer="chris@cbrgm.de"
+LABEL maintainer="antonov@perx.ru"
 LABEL version="latest"
 
 ARG HUGO_VERSION

@@ -5,15 +5,15 @@ README_TEMPLATE=./docs/tmpl.md
 all: release
 
 test: Dockerfile drone-hugo.sh
-	docker build -t "plugins/hugo:$(release)_test" --build-arg HUGO_VERSION="$(hugo)" .
+	docker build --squash -t "perxteam/drone-hugo:$(release)_test" --build-arg HUGO_VERSION="$(hugo)" .
 
 build: Dockerfile drone-hugo.sh
-	docker build -t "plugins/hugo:$(release)" --build-arg HUGO_VERSION="$(hugo)" .
-	docker build -t "plugins/hugo:latest" --build-arg HUGO_VERSION="$(hugo)" .
+	docker build -t "perxteam/drone-hugo:$(release)" --build-arg HUGO_VERSION="$(hugo)" .
+	docker build -t "perxteam/drone-hugo:latest" --build-arg HUGO_VERSION="$(hugo)" .
 
 push: build
-	docker push "plugins/hugo:$(release)"
-	docker push "plugins/hugo:latest"
+	docker push "perxteam/drone-hugo:$(release)"
+	docker push "perxteam/drone-hugo:latest"
 
 release: $(README_TEMPLATE) test push build clean
 	sed 's/<HUGO_VERSION>/$(hugo)/g' $(README_TEMPLATE) > temp.md
@@ -24,6 +24,6 @@ release: $(README_TEMPLATE) test push build clean
 	git push origin master
 
 clean:
-	docker rmi plugins/hugo:$(release)
-	docker rmi plugins/hugo:latest
-	docker rmi plugins/hugo:$(release)_test
+	docker rmi perxteam/drone-hugo:$(release)
+	docker rmi perxteam/drone-hugo:latest
+	docker rmi perxteam/drone-hugo:$(release)_test
